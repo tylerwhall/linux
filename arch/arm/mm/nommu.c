@@ -255,20 +255,24 @@ static int mpu_setup_region(unsigned int number, phys_addr_t start,
 */
 void __init mpu_setup(void)
 {
+	struct memblock_region *reg;
 	int region_err;
+
 	if (!mpu_present())
 		return;
 
-	region_err = mpu_setup_region(MPU_RAM_REGION, PHYS_OFFSET,
-					ilog2(meminfo.bank[0].size),
-					MPU_AP_PL1RW_PL0RW | MPU_RGN_NORMAL);
-	if (region_err) {
-		panic("MPU region initialization failure! %d", region_err);
-	} else {
-		pr_info("Using ARMv7 PMSA Compliant MPU. "
-			 "Region independence: %s, Max regions: %d\n",
-			mpu_iside_independent() ? "Yes" : "No",
-			mpu_max_regions());
+	for_each_memblock(memory, reg) {
+		region_err = mpu_setup_region(MPU_RAM_REGION, reg->base,
+						ilog2(reg->size),
+						MPU_AP_PL1RW_PL0RW | MPU_RGN_NORMAL);
+		if (region_err) {
+			panic("MPU region initialization failure! %d", region_err);
+		} else {
+			pr_info("Using ARMv7 PMSA Compliant MPU. "
+				 "Region independence: %s, Max regions: %d\n",
+				mpu_iside_independent() ? "Yes" : "No",
+				mpu_max_regions());
+		}
 	}
 }
 #else
