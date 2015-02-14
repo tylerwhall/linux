@@ -144,7 +144,7 @@ void __init sanity_check_meminfo_mpu(void)
 		pr_warn("Truncating memory from %pa to %pa (MPU region constraints)",
 				&specified_mem_size, &aligned_region_size);
 		memblock_remove(mem_start + aligned_region_size,
-				specified_mem_size - aligned_round_size);
+				specified_mem_size - aligned_region_size);
 
 		mem_end = mem_start + aligned_region_size;
 	}
