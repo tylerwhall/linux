@@ -87,7 +87,6 @@ static unsigned long irbar_read(void)
 /* MPU initialisation functions */
 void __init sanity_check_meminfo_mpu(void)
 {
-	int i;
 	phys_addr_t phys_offset = PHYS_OFFSET;
 	phys_addr_t aligned_region_size, specified_mem_size, rounded_mem_size;
 	struct memblock_region *reg;
