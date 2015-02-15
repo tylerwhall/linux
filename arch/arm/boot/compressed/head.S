@@ -11,7 +11,8 @@
 #include <linux/linkage.h>
 #include <asm/assembler.h>
 
-	.arch	armv7-a
+	//.arch	armv7-a
+	.arch	armv7-r
 /*
  * Debugging stuff
  *
