@@ -183,9 +183,11 @@ static void pcpu_unmap_pages(struct pcpu_chunk *chunk,
 static void pcpu_post_unmap_tlb_flush(struct pcpu_chunk *chunk,
 				      int page_start, int page_end)
 {
+#ifdef CONFIG_MMU
 	flush_tlb_kernel_range(
 		pcpu_chunk_addr(chunk, pcpu_low_unit_cpu, page_start),
 		pcpu_chunk_addr(chunk, pcpu_high_unit_cpu, page_end));
+#endif
 }
 
 static int __pcpu_map_pages(unsigned long addr, struct page **pages,
