@@ -62,6 +62,8 @@ extern int __put_user_bad(void);
 #define KERNEL_DS	0x00000000
 #define get_ds()	(KERNEL_DS)
 
+#define segment_eq(a,b)	((a) == (b))
+
 #ifdef CONFIG_MMU
 
 #define USER_DS		TASK_SIZE
@@ -72,8 +74,6 @@ static inline void set_fs(mm_segment_t fs)
 	current_thread_info()->addr_limit = fs;
 	modify_domain(DOMAIN_KERNEL, fs ? DOMAIN_CLIENT : DOMAIN_MANAGER);
 }
-
-#define segment_eq(a,b)	((a) == (b))
 
 #define __addr_ok(addr) ({ \
 	unsigned long flag; \
@@ -207,7 +207,6 @@ extern int __put_user_8(void *, unsigned long long);
  */
 #define USER_DS			KERNEL_DS
 
-#define segment_eq(a,b)		(1)
 #define __addr_ok(addr)		((void)(addr),1)
 #define __range_ok(addr,size)	((void)(addr),0)
 #define get_fs()		(KERNEL_DS)
