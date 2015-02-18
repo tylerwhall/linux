@@ -88,11 +88,11 @@
 /*
  * The limitation of user task size can grow up to the end of free ram region.
  * It is difficult to define and perhaps will never meet the original meaning
- * of this define that was meant to.
- * Fortunately, there is no reference for this in noMMU mode, for now.
+ * of this define that was meant to. This used in user_addr_valid() and is
+ * defined such that it should always return success.
  */
 #ifndef TASK_SIZE
-#define TASK_SIZE		(CONFIG_DRAM_SIZE)
+#define TASK_SIZE		(END_MEM)
 #endif
 
 #ifndef TASK_UNMAPPED_BASE
