@@ -197,6 +197,13 @@
 			&hsusbb1_pins
 	>;
 
+	uart4_pins: pinmux_uart4_pins {
+		pinctrl-single,pins = <
+			0x11c (PIN_INPUT | MUX_MODE0)	/* uart4_rx.uart4_rx */
+			0x11e (PIN_OUTPUT | MUX_MODE0)	/* uart4_tx.uart4_tx */
+		>;
+	};
+
 	twl6040_pins: pinmux_twl6040_pins {
 		pinctrl-single,pins = <
 			0xe0 (PIN_OUTPUT | MUX_MODE3)	/* hdq_sio.gpio_127 */
@@ -491,6 +498,8 @@
 &uart4 {
 	interrupts-extended = <&gic GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH
 			       &omap4_pmx_core OMAP4_UART4_RX>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart4_pins>;
 };
 
 &usb_otg_hs {
