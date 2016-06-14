@@ -238,6 +238,11 @@ ENTRY(cpu_pj4b_do_resume)
 	mcr	p15, 1, r8, c15, c1, 2	@ restore CP15 - Aux Debug Modes Ctrl 2
 	mcr	p15, 1, r9, c15, c1, 1  @ restore CP15 - Aux Debug Modes Ctrl 1
 	mcr	p15, 0, r10, c9, c14, 0  @ restore CP15 - PMC
+	/* Armada XP Test Hack - Enable snoop filter */
+	ldr	r9, =0xd0021020
+	ldr	r10, [r9]
+	orr	r10, r10, #0x1
+	str	r10, [r9]
 	b cpu_v7_do_resume
 ENDPROC(cpu_pj4b_do_resume)
 #endif
@@ -409,6 +414,7 @@ __v7_pj4b_setup:
 #define PJ4B_CWF (1 << 27) /* Disable Critical Word First feature */
 #define PJ4B_OUTSDNG_NC (1 << 29) /* Disable outstanding non cacheable rqst */
 #define PJ4B_L1_REP_RR (1 << 30) /* L1 replacement - Strict round robin */
+#define PJ4B_WRITE_EVICT (1 << 31)
 #define PJ4B_AUX_DBG_CTRL2 (PJ4B_SNOOP_DATA | PJ4B_CWF |\
 			    PJ4B_OUTSDNG_NC | PJ4B_L1_REP_RR)
 
@@ -431,7 +437,14 @@ __v7_pj4b_setup:
 	mrc	p15, 1,	r0, c15, c1, 2
 	bic	r0, r0, #PJ4B_FAST_LDR
 	orr	r0, r0, #PJ4B_AUX_DBG_CTRL2
+	orr	r0, r0, #PJ4B_WRITE_EVICT
 	mcr	p15, 1,	r0, c15, c1, 2
+
+	/* Armada XP Test Hack - Enable snoop filter */
+	ldr	r0, =0xd0021020
+	ldr	r10, [r0]
+	orr	r10, r10, #0x1
+	str	r10, [r0]
 
 	/* Auxiliary Functional Modes Control Register 0 */
 	mrc	p15, 1,	r0, c15, c2, 0
